@@ -78,6 +78,8 @@ const MyProperty = ({ navigation }) => {
                     <Icon name={item.subtype == 'Residential' ? 'home' : 'building-o'} size={12} /> {item.subtype}</Text>
                   <Text style={{ fontSize: 15, color: global.color }}>{item.propertytype}</Text>
                   <Text style={{ fontSize: 12, color: 'black' }}>{item.propertyname}</Text>
+                  <Text style={{ fontSize: 12, marginBottom: 5, color: 'black' }}>
+                  <Icon name="map-marker" color={global.color} /> {item.subarea}</Text>
                   {/* <Text style={{ fontSize: 12, color: 'black' }}>
                     <Icon name="map-marker" color={global.color} /> {item.subarea}</Text> */}
 

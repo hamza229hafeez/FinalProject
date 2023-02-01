@@ -29,6 +29,8 @@ const Search = ({ navigation }) => {
     const [DDsubsector, setDDsubsector] = useState(false);
     const [subsector, setsubsector] = useState();
     const [subsectorList, setsubsectorlist] = useState([]);
+    const [floor, setfloor] = useState();
+    const [DDfloor, setDDfloor] = useState(false);
 
     const [DDsubtype, setDDsubtype] = useState(false);
     const [subtype, setsubtype] = useState();
@@ -72,7 +74,7 @@ const Search = ({ navigation }) => {
     const [water, setwater] = useState();
     const [parking, setparking] = useState();
     const [price, setprice] = useState()
-    const [propertytype, setpropertytype] = useState()
+    const [propertytype, setpropertytype] = useState("Residential")
      
     const [srch,setsrch]=useState()
     // let property = {
@@ -240,7 +242,46 @@ const Search = ({ navigation }) => {
                                     ]}
                                 />
                             </View>
-
+                            <View
+                                style={{ flex: 1, marginLeft: 5 }}
+                            >
+                                <Text style={styles.heading}>Select Floor</Text>
+                                <TouchableOpacity
+                                    style={styles.ddview}
+                                    onPress={() => {
+                                        setDDfloor(true)
+                                    }}
+                                >
+                                    <Text style={[styles.inerview, { height: 50, textAlignVertical: 'center' }]}>{floor}</Text>
+                                </TouchableOpacity>
+                                <CustDD
+                                    open={DDfloor}
+                                    setselect={setfloor}
+                                    setopen={setDDfloor}
+                                    data={[
+                                        {
+                                            label: "Basment",
+                                            value: "Basment",
+                                        },
+                                        {
+                                            label: "Ground",
+                                            value: "Ground",
+                                        },
+                                        {
+                                            label: "1st",
+                                            value: "1st",
+                                        },
+                                        {
+                                            label: "2nd",
+                                            value: "2nd",
+                                        },
+                                        {
+                                            label: "3rd",
+                                            value: "3rd",
+                                        },
+                                    ]}
+                                />
+                            </View>
                         </View>
                         <Text style={styles.heading}>Maximum Price</Text>
                         <TextInput

@@ -15,9 +15,28 @@ import {
 import CustActivity from './acvitity'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
+import PushNotification from "react-native-push-notification";
 LogBox.ignoreAllLogs(['useNavigateDriver'])
 
 const SignIn = ({ navigation }) => {
+  useEffect(() => {
+    createChannels();
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const createChannels = () => {
+    PushNotification.createChannel(
+      {
+        channelId: "test",
+        channelName: "test ok"
+      }
+    )
+  }
 
 
   const backAction = () => {
@@ -31,15 +50,7 @@ const SignIn = ({ navigation }) => {
     ]);
     return true;
   };
-  useEffect(() => {
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
 
   const mycolor = global.color
@@ -67,7 +78,7 @@ const SignIn = ({ navigation }) => {
         body: JSON.stringify(user)
       })
       data = await response.json()
-//console.log(data);
+      //console.log(data);
       setloder(false)
 
       data == '0' ? (alert("User Not Exist")) : (
@@ -275,7 +286,7 @@ const styles = StyleSheet.create({
   main: { backgroundColor: 'white', flex: 1, padding: '2%' },
   pic: { flex: 1, width: '99%', alignItems: 'center', padding: '5%', marginTop: '15%', alignSelf: 'center' },
   logo: { fontSize: 25, fontWeight: 'bold', color: global.color, textAlign: 'center' },
-  inputview:{
+  inputview: {
     flexDirection: 'column'
     , flex: 1, padding: '7%'
   },

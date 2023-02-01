@@ -17,6 +17,8 @@ import Stars from 'react-native-stars';
 import { RefreshControl } from 'react-native';
 import CustDD from '../API_Calling/CustDropDown';
 import { CityList } from '../Screens_Owner/Data';
+import PushNotification from "react-native-push-notification";
+
 
 const windowWidth = (Dimensions.get('window').width / 2) + (Dimensions.get('window').width / 5);
 const windowHeight = (Dimensions.get('window').height / 2) + (Dimensions.get('window').height / 5);
@@ -82,38 +84,72 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     setcity(global.user.address)
     getpropertydata()
-
   }, [])
   useEffect(() => {
     getpropertydata()
   }, [city])
-  let DATA;
+  
   //fetch data from Api
   const [data, setdata] = useState([])
 
   const onRefresh = React.useCallback(async () => {
-    
+
     setcity(global.user.address)
     getpropertydata()
-    
+
   }, [refreshing])
+
+//notification
+const handleNotification = (n) => {
+  n.map((m)=>{
+    if(m.status==0)
+    {
+      PushNotification.localNotification({
+        channelId: "test",
+        title: m.sender.name,
+        message: "Against " + m.property.propertyname + m.property.subarea + m.property.city
+  
+      })
+    }
+  })
+ 
+}
+
+setTimeout(() => {
+  getNotifi()
+}, 2500);
+
+  // useEffect(() => {
+  //   getNotifi()
+  // }, [])
+  async function getNotifi() {
+    try {
+      let response = await fetch(global.dataapi + 'Notification/getNotifications?id=' + global.user.id)
+      let req = await response.json()
+      console.log(req);
+      handleNotification(req)      
+    }
+    catch (e) { alert(e); setloader(false) }
+  }
+
+
 
   async function getpropertydata() {
     try {
       setRefreshing(true);
       let id = global.user.id
-      let response = await fetch(global.dataapi + 'property/getProperties?id=' + id+"&City="+city)
-      DATA = await response.json()     
-      setdata(DATA)
+      let response = await fetch(global.dataapi + 'property/getProperties?id=' + id + "&City=" + city)
+      let d = await response.json()
+      setdata(d)
       setRefreshing(false);
     }
-    catch (e) { alert(e); setRefreshing(false);}
+    catch (e) { alert(e); setRefreshing(false); }
   }
   //code for render item
   const conditionalrenderItem = (props) => {
-    let item=props.item.data
-    let pic=props.item.image[0]
-    let nrate=props.nrate
+    let item = props.item.data
+    let pic = props.item.image[0]
+    let nrate = props.nrate
     if (all + (item.subtype == condition)) {
       if (item.subarea.toLowerCase().includes(searchcity.toLowerCase()))
         return (
@@ -140,8 +176,8 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'black' }}>{item.rent}
                   <Text style={{ fontSize: 10, }}> (PKR)</Text>
                 </Text>
-                
-                <Text style={{ fontSize: 12, marginBottom: 5, color: 'black'}}>
+
+                <Text style={{ fontSize: 12, marginBottom: 5, color: 'black' }}>
                   <Icon name="map-marker" color={global.color} /> {item.subarea}</Text>
               </View>
               <View
@@ -149,16 +185,16 @@ const HomeScreen = ({ navigation }) => {
               >
                 {/* <Text style={{ fontSize: 15, marginBottom: 5, color: 'black', }}>
                   <Icon name="map-marker" color={global.color} size={15} />  {item.city}</Text> */}
-                  
+
                 <View
-                  style={{ paddingBottom: 10,flexDirection:'row',alignItems:'center'}}
+                  style={{ paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }}
                 >
-                <Text
-                >
-                  ({nrate!=null?nrate:'0'})
-                </Text>
+                  <Text
+                  >
+                    ({nrate != null ? nrate : '0'})
+                  </Text>
                   <Stars
-                    default={item.rate==null?3:item.rate}
+                    default={item.rate == null ? 3 : item.rate}
                     count={5}
                     disabled={true}
                     starSize={50}
@@ -198,6 +234,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             setDDcity(true)
+            
           }}
         >
           <Text

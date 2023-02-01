@@ -90,7 +90,7 @@ function MainOwnerPage({ navigation }) {
                 }
                 <TouchableOpacity
                   onPress={() => {
-                    global.naviof.navigate('Map')
+                    global.naviof.navigate('Notify',{id:global.user.id})
                   }
                   }
                 ><Icon name={'bell'} color={'white'} size={20}/>

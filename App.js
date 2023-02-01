@@ -26,6 +26,7 @@ import DashBoard from './src/Main/DashBoard';
 import HomeScreen from './src/Main/HomeScreen';
 import ODashBoard from './src/Screens_Owner/ODashBoard';
 import History from './src/Screens_Owner/History';
+import Notify from './src/Main/Notification';
 
 global.color = '#2859a6';
 
@@ -76,6 +77,7 @@ function MyStack() {
       <HomeStack.Screen name="BDORT" component={BDORT} />
       <HomeStack.Screen name="History" component={History} />
       <HomeStack.Screen name="AddMap" component={AddMap} />
+      <HomeStack.Screen name="Notify" component={Notify} />
       
     </HomeStack.Navigator>
   )
